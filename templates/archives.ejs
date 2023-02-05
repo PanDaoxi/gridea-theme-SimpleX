@@ -16,11 +16,11 @@
           <h2 class="archives-title">文章归档</h2>
           <div class="archives-container">
             <% years.forEach(function(year) { %>
-              <h2 class="year" data-aos="fade-in" data-aos-delay="500"><%- year %></h2>
+              <h2 class="year" data-aos="fade-in" data-aos-delay="500"><i class="fa fa-clock-o"></i> <%- year %></h2>
               <% posts.forEach(function(post) { %>
                 <%if (post.date.indexOf(year) !== -1) { %>
                   <article class="post">
-                    <a href="<%= post.link %>">
+                    <a href="<%= post.link %>" style="color:rgb(89,120,243);">
                       <h2 class="post-title">
                         <%= post.title %>
                       </h2>
