@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./_blocks/head', { siteTitle: themeConfig.siteName }) %>
+    <meta name="description" content="<%= themeConfig.siteDescription %>">
+    <% if (site.customConfig.renderKaTeX) { %>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <% } %>
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <%- include('./_blocks/sidebar') %>
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <% posts.forEach(function(post) { %>
+            <article class="post-item">
+              <div class="left">
+                <a href="<%= post.link %>"  style="color:rgb(89,120,243);">
+                  <h2 class="post-title"><%= post.title %></h2>
+                </a>
+                <div class="post-date" style="white-space: pre;">
+                  <i class="fa fa-calendar"></i>  <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mtext>B</mtext></mrow><annotation encoding="application/x-tex">\text{B}</annotation></semantics></math></span><span aria-hidden="true" class="katex-html"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord text"><span class="mord"><%= post.dateFormat%></span></span></span></span></span>
+                </div>
+                <div class="post-abstract">
+				  <i class="fa fa-tag"></i>  
+				  <% post.tags.forEach(function(tag, index) { %>
+					<a href="<%= tag.link %>"><%= tag.name %>
+					<% if (index !== post.tags.length - 1) { %>、<% } %></a><% }); %>
+                </div>
+              </div>
+              <% if (themeConfig.showFeatureImage && post.feature) { %>
+                <a class="right" href="<%= post.link %>">
+                  <div class="feature-container" style="background-image: url('<%= post.feature %>')">
+                  </div>
+                </a>
+              <% } %>
+            </article>
+          <% }); %>
+
+          <%- include('./_blocks/pagination') %>
+        </div>
+      </div>
+    </div>
+
+    <%- include('./_blocks/scripts') %>
+	<div id="goTopBtn"><i class="fa fa-angle-up" aria-hidden="true"></i></div>
+	<style>
+	#goTopBtn {
+		position: fixed;
+		line-height: 45px;
+		text-align: center;
+		width: 45px;
+		bottom: 35px;
+		height: 45px;
+		cursor: pointer;
+		display: none;
+		border-radius: 6px;
+		filter: progid: DXImageTrnsform.Microsoft.Shadow(color=#e1e1e1,direction=120,strength=4);
+		box-shadow: 8px 8px 10px rgba(225, 225, 225, 255);
+		font-size: 25px;
+		color: #999;
+		background-color: #f5f5f5;
+	}
+	</style>
+	<script>
+	$(window).scroll(function(){
+	   var sc=$(window).scrollTop();
+	   var rwidth=$(window).width()
+	   if(sc>0){
+		$("#goTopBtn").css("display","block");
+		$("#goTopBtn").css("left",(rwidth-60)+"px")
+	   }else{
+	   $("#goTopBtn").css("display","none");
+	   }
+	 })
+	 $("#goTopBtn").click(function(){
+	   var sc=$(window).scrollTop();
+	   $('body,html').animate({scrollTop:0},500);
+	 })
+
+	   </script>
+  </body>
+</html>

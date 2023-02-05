@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./_blocks/head', { siteTitle: `${post.title} | ${themeConfig.siteName}` }) %>
+    <meta name="description" content="<%- post.description %>" />
+    <meta name="keywords" content="<%- post.tags.map(tag => tag.name).join(',') %>" />
+  </head>
+  <body>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js"></script>
+    <div id="app" class="main">
+
+      <%- include('./_blocks/sidebar') %>
+	  
+	  
+	  <script>
+		document.addEventListener("visibilitychange", function () {
+			if (document.hidden) {
+				document.title="歪？不要我啦？";
+			} else  {
+				document.title="(ㄏ￣▽￣)ㄏ终于回来啦";
+				setTimeout(function(){
+					document.title= "<%= post.title %> | <%= themeConfig.siteName %>";
+				}, 2000);
+			}
+		}, false);
+	</script>
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title"><%= post.title %></h2>
+            <div class="post-date"><%= post.dateFormat %></div>
+            <% if (post.feature) { %>
+              <div class="feature-container" style="background-image: url('<%= post.feature %>')">
+              </div>
+            <% } %>
+            <div class="post-content" v-pre>
+              <%- post.content %>
+            </div>
+            <% if (post.tags.length > 0) { %>
+              <div class="tag-container">
+                <% post.tags.forEach(function(tag, index) { %>
+                  <a href="<%= tag.link %>" class="tag">
+                    <%= tag.name %>
+                  </a>
+                <% }); %>
+              </div>
+            <% } %>
+            <% if (post.nextPost && !post.hideInList) { %>
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="<%= post.nextPost.link %>">
+                  <h3 class="post-title">
+                    <%= post.nextPost.title %>
+                  </h3>
+                </a>
+              </div>
+            <% } %>
+
+            <% if (typeof commentSetting !== 'undefined' && commentSetting.showComment) { %>
+              <% if (commentSetting.commentPlatform === 'gitalk') { %>
+                <div id="gitalk-container" data-aos="fade-in"></div>
+              <% } %>
+
+              <% if (commentSetting.commentPlatform === 'disqus') { %>
+                <div id="disqus_thread" data-aos="fade-in"></div>
+              <% } %>
+            <% } %>
+			<div id="vcomments"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%- include('./_blocks/scripts') %>
+	<script src="//sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+	<script>
+        new Valine({
+            el: '#vcomments',
+            appId: 'iSFPoEhAVR5wEDbz7SUui5YR-gzGzoHsz',
+            appKey: 'aEnh7WKEZypE8MmNBkqs75YD',
+			placeholder: '发表评论……',
+			enableQQ: true,
+			recordIP: true,
+			avatar: 'hide',
+			visitor: true,
+			requiredFields: ['nick',],
+			
+			emojiCDN: 'https://bili-emoji.netlify.app/',
+			emojiMaps: {"2023":"5531a5834816222280f20d1ef9e95f69.png","doge":"03ea345ce429b6581d7c28c33305c2b6.png","OK":"e0aa021e21dddbd6d8cecec71e9cf564.png","爱心":"5a2e579b2ef8ff3090980e6ef8f8604d.png","牛年":"3bf5d6cbbefba8ce97a0648b6a4c0682.png","生气":"e8c6c4d90f60dc0074480dc9d83f1fc1.png","生病":"75d80e662baa92dd5400de5f31db16a5.png","疑惑":"ec573404da933630a6037e79f427f43b.png","疼":"47f18cd93a3d67082ab4028fb456cd22.png","福":"13c2add0eca14eba6b76cd59c79cd00e.png","福到了":"28dd4b5f759cce66af0bf2bd4b3bb8f1.png","笑":"1300f40cb6582e518c31c61f7c35c8b0.png","笑哭":"11d2b3795aa8bbc128137269ed565070.png","给心心":"4a3742927431d854b2657900650b0199.png","翻白眼":"e0a8eaa61f61b9cbf7428ea5d859a610.png","老鼠":"bee2749d0ea6dfdfabeee6c3140142c5.png","胜利":"bf7230c44b0ea4839ca59915de038bf8.png","脱单doge":"3a101c859028a2cb92189fc1b9c15522.png","脸红":"cc34c4b1d5c0314e7c27b064783765e8.png","藏狐":"54a1c77cf216d778c6bde5385106ead1.png","视频卫星":"c1170961f032cb5f6f424a46df69215f.png","调皮":"9a87d094973ac78633dbb885e6d7bc16.png","豹富":"6832a46e3211c84937ce8f738fc6c34a.png","跪了":"80e7fe98490ad7819e457ad68ba93dc1.png","辣眼睛":"da076b252779b6888eb13353baa3bdc8.png","酸了":"1c91ce1be1a714aaab88b50032af5e46.png","锦鲤":"24d37f3a5cd1958a30fee2ce0958843c.png","阴险":"f1f4185dc58bed6b9f6c11e3845252c4.png","难过":"aa267ae0097323d46a31a6f8be587425.png","雪花":"ada28642cc8d64807b4f17fe2a504001.png","鸡腿":"9e8e0318425e24fa7b030887ca1faa79.png","黑洞":"6d1aab676d695c9d734a91673344fbd9.png","鼓掌":"5e608d099e4dc9f59c5861ce58e37cfa.png","三星堆":"3b8d3828539c40511e0923bca8e9d5be.png","保佑":"f8019651efa7fc42f2ae73f0061e7996.png","偷笑":"dfa6c0645f1321c9827bd6aad25b66fe.png","傲娇":"e3f1124cb5b212cf015c87bacbe5fe2b.png","兔年":"cd2a975f8ad3079f897751d3743c600c.png","再见":"8e5c0a1e46703251c02613c1048177f1.png","冷":"74eaee9656d23f18bb33d2b88098a64a.png","保卫萝卜_哇":"958c8f6ce7bb0484a4a63f7e9c5b4cac.png","保卫萝卜_哭哭":"fa8815bfc7434d0ff0373228fb56a56f.png","保卫萝卜_白眼":"ed136073c5462ff86d8f5fe38b0345f4.png","保卫萝卜_笔芯":"20d8df4f8239f84dafc8ba105b83adcd.png","保卫萝卜_问号":"38694eedc51856378ca5c6ae85b6c3ed.png","初音未来_大笑":"1e3f26eaf50812c931699c5d0c5a6405.png","加油":"062286ae94fbad3cfee4bd71bf947079.png","原神_哇":"f4b4c770ffd27fa7767dbae241515881.png","原神_哼":"bd4db1c27e8c6be399132039e2f6fca0.png","原神_喝茶":"2037a4c00c04e084d364d54194392d1d.png","原神_嗯":"6381eda0d5ed6a7cb86e0186653d9676.png","原神_欸嘿":"617e49b7dda9d8b6369b173bcb79cc74.png","原神_生气":"af05133b30a5154feb7a3d313008bb5f.png","口罩":"6cd2f36be2b2f9bf938b829fc751e982.png","吃瓜":"455e2b33e157302615678229812d5009.png","吐":"37a03b5e5ec229e8b868693d89ed5b87.png","吓":"17a6c6e6971ed5e08c9f773a09c3aa27.png","呆":"4894c23dd5ef63f827c0c1339495e088.png","呲牙":"f70ae5045d4cc4958e660d3ff28c0d40.png","哈欠":"cf8b4e4df0ef3e6e2fc0409b80147509.png","响指":"f86fbb1a6c3c3652cdc834f812bebba6.png","哦呼":"6f93da6622b4f2e5c3b5a10e70b7cc2c.png","喜极而泣":"e01b6f9b9133c9fb68644a2a9d12708e.png","喜欢":"3d6c396cf4dea3ba2ddb255499dc356a.png","嗑瓜子":"21c569b91e01aad21aeb9c7e1f13178c.png","嘘声":"86273591d0f0fe68453ba76ad611891f.png","嘟嘟":"571103f5e19c06ae75a35644a0e6e203.png","囧":"28986931b90a613b312e004ee2d4925a.png","坎公骑冠剑_吃鸡":"ea160dce32055766020bf674825682ad.png","坎公骑冠剑_ 无语":"0a47b3ee96217b77d5950c00944d8917.png","坎公骑冠剑_钻石":"874df05d9ed4b40427d997243567603f.png","墨镜":"df2cf3c4640f3db4dffe408f7f26060e.png","大哭":"d0cfabad423efa8c95ceb9f98d8778ca.png","大笑":"4402e6e2322eb29cd52dcf9240af6ed6.png","奋斗":"54f5a9c8982f82c776c238b7c5fb7330.png","奥比岛_击爪":"1a3dbffdb829918a04d682c0afc13490.png","奥比岛_喜欢":"93cfb95455ea1249626a86758fad5f12.png","奥比岛_委屈":"cebc9e6dc37fd3f5370175413eca6f9c.png","奥比岛_搬砖":"71fc9dcc474501e993ff996df7b93233.png","奥比岛_点赞":"3b2c7eab1a4438904b651699d28f5563.png","奶茶干杯":"36e525ba9cce1941d38ac4f2b4360700.png","奸笑":"ab5805c719476ccd364209b755dec633.png","妙啊":"ec697e020ed66efc2816895ac2b5a5e1.png","委屈":"af41e0fd8f967c8f968c5d7216725138.png","嫌弃":"485a3f823ee4f7b6e7db6620bfede57c.png","害羞":"0e025345ece4c327bf0278a0d4b3631f.png","尴尬":"1ef4729c527b947833b5761771963550.png","干杯":"1e69a0b68e1682b8adfe6af7a2b0068d.png","微笑":"5acfd68d016cc6141559976112b7beb4.png","念诗之王":"b6046c63c4cf003213ca63a9a3cf6794.png","思考":"21d68b2de0e91dfb14942ca8aea316fc.png","怪我咯":"0766960579a7cf430e2c77a4d52afbc0.png","惊喜":"ba8e1a9ae55fbd5390f4b7c994830737.png","惊讶":"e3b28512cdd930a916f970070e17c10f.png","打call":"d54bb8db985d9eeab6bcf6630a8e9a3a.png","抓狂":"a4de54142f04bdc45c79dc49850ebb6c.png","抠鼻":"3822354914484432273dafbdb18aa94d.png","抱拳":"94d3a21b006ff84f25a4bc45897f4f86.png","拥抱":"18cdedfccd6e4436f982895047dfaeb6.png","捂眼":"f324db992a5b35565a882aca247232fc.png","捂脸":"eb0caf12c6f8d145fc7ab35c96cec54d.png","撇嘴":"a669a1cfabc6dab5dd2a50b59786e2c9.png","支持":"262b0b07dfd0cad4cb8eb442fee44882.png","无悔华夏_不愧是你":"569ed5d136a4a1febba0982cd6a62180.png","无悔华夏_吃瓜":"0230dd3fcd464ad01d536afa2f1b8783.png","无悔华夏_好耶":"8e3de71b2ff49917291fc2fb84e2d5ca.png","无悔华夏_点赞":"0b9a1b0bffb5c34779d12c666f41e38c.png","无悔华夏_达咩":"e9d57ea7af49dfcba8a7bce8de30c24c.png","无语":"27df619585afad4c65eebe95ba98d085.png","星星眼":"e7733aecc308d2c18b7068d5b4cdb3b8.png","来古-呆滞":"baf2450b3a3b74cad596c20523f83cf2.png","来古-沉思":"74397ae15c538c5630ac133bc5e36dcf.png","来古-注意":"7fcf233766f53a28c7f4c8a7dee639d1.png","来古-疑问":"dc73258c54950089f3ac50cb5fb5ac73.png","来古-震撼":"f4394c7d83d925b0e1fe29013dc3f73f.png","歪嘴":"5a135a627c7733c80368ac33c5df3371.png","水稻":"f8bd0a90d88a8d7df5a501590df43fd6.png","汤圆":"5dd80708ba52fef5a61e95de3a5a99c8.png","洛天依":"2b4aeae2d98f0032a2e6fa1f44ed2367.png","滑稽":"bcd94fd3f6b6cfef934b944faf4f9382.png","灵魂出窍":"78ed423d2ec574de1b78b44c84964f24.png","点赞":"75f0fa966d8246d1ba25faa636a40753.png","热":"2044c27397909670f0d90b8b6b5c15c5.png","tv_doge":"4eff1b3335389dd09ff7c69517f2b509.png","tv_亲亲":"4fea3e2403675decd5da17ea17784f68.png","tv_偷笑":"c9a772772778f5e2ec164c29a61a9eb5.png","tv_再见":"3542c4670aad5a693ea398ecebc1153d.png","tv_冷漠":"b12a49f12c8f86ad68864410e9620f55.png","tv_发怒":"38c85ccf43a4601d86b7b00da1a22068.png","tv_发财":"7eed0d93b0c3f70dd026a0fc5028dae4.png","tv_可爱":"14c00346fff68205047a1b529ef95e59.png","tv_吐血":"48a162e62521090979472aa230d0b784.png","tv_呆":"30325743c8a0c5f19a0cafb3957e3cf3.png","tv_呕吐":"e41cfc697caadd77b7dd1dac4c060c6a.png","tv_困":"dbf2ae0c09708ff242090b07577de943.png","tv_坏笑":"3eec33df13571865476e7a30460ae9f9.png","tv_大佬":"e314f8367a221c8edc03060b655f859f.png","tv_大哭":"ede1659180b1a78910d51565950df893.png","tv_委屈":"3cb14e94fac0f4c993eb333e04cad01d.png","tv_害羞":"e568e6ad2b5143f25409f3e559a7cfff.png","tv_尴尬":"5af7407aca8fc41cbaaabdc79879c249.png","tv_微 笑":"8375a890c9f3f1f40ee9a9de5257a0f0.png","tv_思考":"d1f74953fbc6b6d7ca6f96eb1675e1a1.png","tv_惊吓":"bc84a49558952ba388aa98006b16ca57.png","tv_打脸":"397d65c1395d79d4a703a953c7f6caee.png","tv_抓狂":"f86000e53faaa1184578a004307fe110.png","tv_抠鼻":"880a3b5b023b5027b72bac1783f51d6e.png","tv_斜眼笑":"ded4aee92e0f30b3eeb36a1e05a5d1f0.png","tv_无奈":"e87cdb2408e8040d0bc192cd5b24ea9a.png","tv_晕":"581ba4770ff48629ddbf6f6243255843.png","tv_流汗":"ddd12a769c25727929b12ff92b3c9d9d.png","tv_流泪":"ccf0903e32a8fd7f28e5b0d92253a512.png","tv_流鼻血":"361836c3c0cfdd8f5705dfc8c6b6488e.png","tv_点赞":"3ee847d3edeafc252d0794544f9992e4.png","tv_生气":"fe2a7b204c5a8020f83d942a70c9a0f6.png","tv_生病":"5e96847d33c455e5a0ab6712f64a0858.png","tv_疑问":"fdfd8ce477389814748484de4dd9cc9a.png","tv_白眼":"cf4a00990fb20135ffc65eeca265d794.png","tv_皱眉":"f1223580f477d8c97cdb9b0822d3b60e.png","tv_目瞪口呆":"493143090e9e38e268b3b111514d0c8b.png","tv_睡着":"f4af815fe92d682d3df27ae1b95d07e4.png","tv_笑哭":"a2d451b59201a82aa05e974039646d2c.png","tv_腼腆":"aff63ac8d7c0be5783e0a702d5188d87.png","tv_色":"5391e9cddd0b56bf0a5e113ee109b759.png","tv_调侃":"91fa1621c2280d85586a66c5838dec91.png","tv_调皮":"2c4bf726cdab685580696e66fc283018.png","tv_鄙视":"ef9e87e1368c419999dca8bee19e3657.png","tv_闭嘴":"121cb61f9686eb7a1ce0653369a287f6.png","tv_难过":"41dee0cdfb4823b9d72575fe66e0f29a.png","tv_馋":"16a551f55db0522450c7a5cdb58a2745.png","tv_鬼脸":"cb4c4c3d5c7e029990a10bf9f7a6759e.png","tv_黑人问号":"f96f00a2382dd34bc68710894a3e46da.png","tv_鼓掌":"8b2a90cfdc48fa5ddb7bd8f5876b3ad9.png","热词系列_AWSL":"f52dee79a6f9c74a594e5d52df8919ff.png","热词系列_B站有房":"2926f9139b9ef7ac4207dcf4aa485de7.png","热词系列_DNA":"09850c0898143e8797d74523c13f4151.png","热词系列_“狼火”":"55133aace4852644c65d8ff6b23b6afa.png","热词系列_三连":"dca3ed59dc8f33d45b2f80e48f109678.png","热词系列_不孤鸟":"23556d0c7d6a70845f8d66eb355f1986.png","热词系列_不愧是你":"96bca620f4ff630df289aa55c84412c5.png","热词系列_两面包夹芝士":"55baf8275d76d688ecec3b5cdb39fe91.png","热词系列_仙人指路":"6710e5aaf540a223adcce1484737a874.png","热词系列_优雅":"69951b5017b1be28e1c51d70539597f8.png"," 热词系列_你可真星":"e0e70a44263374388e11c59bf87602d8.png","热词系列_你币有了":"204d0bc36490180bfd072e0d76596338.png","热词系列_你细品":"71de91e6ec58cf483001682b55b78bb5.png","热词系列_保护":"25ee64584465a9fa1e695e5a2ab54513.png","热词系列_再来亿遍":"05bfb2529dfa8d5354b3864299b568dc.png","热词系列_升职加薪":"6b4b5a3cff42bddf440d642fa65d696a.png","热词系列_可以":"04bcbd48785d8a745d473aac8303a8b3.png","热词系列_吃嘛嘛香":"6a321f74de5c8bb88da1a4372cc823a2.png","热词系列_吹爆":"af98bdb941becf6717874aea698e9ce4.png","热词系列_咕咕":"cf0bea011546d1ba893879212e4b8bfe.png","热词系列_多谢款待":"8b6fe30e4fdcbf800583be1b06883977.png","热词系列_大 吉大利":"6ab6f4e95e609f2513351725ecf8c531.png","热词系列_大师球":"3dc4e81d00beb07148c5133dc1b8f571.png","热词系列_夺笋呐":"c787ccb17fc84a699e48a73e7a389aea.png","热词系列_奥力给":"f5b000311d2912ec9e7250970c247dae.png","热词系列_好家伙":"45762dcd55809b4a5e1db4a09a007866.png","热词系列_好活":"601911f29b9d194c2b5653f9cfbaccf9.png","热词系列_好耶":"a2ab3dfaf31c4682e9c537dae725c419.png","热词系列_妙啊":"6abd0cb0a0bd39dd5733f9ff59f316cf.png","热词系列_完结撒花":"e84636bc56ce027d75f7027483d9f93f.png","热词系列_害":"ec97464b88305c2d4ed768c4fd141852.png","热词系列_对象":"a339035cdd5372f1e0939a258172b5de.png","热词系列_希望没事":"628d0b83b5a92152f87f565be9ee72aa.png","热词系列_张三":"e67a68c080bb40bc49e090bcf1d50763.png","热词系列_恭喜发财":"4469fa0345bcc04807b7ab0c3b6c593a.png","热词系列_我全都要":"284d9010c18fca30fd0ec6d8285c3614.png","热词系列_我哭了":"433276c16c2db60601dad1d7f1d26f70.png","热词系列_我太南了":"a74d054606831669bd43a5619155779c.png","热词系列_我裂开了":"66d6eeae84de2afe49b6795863989fb5.png","热词系列_我酸了":"390e8336f3e1d1a3d652937d3bf4355e.png","热词系列_打卡":"a95ba3b1fde6bae2b6269902aa2ab6b9.png","热词系列_排面":"d737b446662ef672f03ad34bb31c6625.png","热词系列_新年快乐":"0af17da634606596063edf6f5c9563f1.png","热词系列_早日脱单":"5d2d97aaea2634b4e2aeedd1a353c41a.png","热词系列_有内味了":"b248f0f83d9c4da06c9f59523e1d5098.png","热词系列_有生之年":"c76657ed71b68ecad2b93f4694a58616.png","热词系列_标准结局":"cffb1fd4112e7c5762a89e4d1bc12b3d.png","热词系列_梦幻联动":"e765568d3732fa345c41284aed8edefe.png","热词系列_泪目":"d7f5dd9f3a2057bf128c27eb7f8d89a7.png","热词系列_洛水天依":"a7d4a2a8b946b4147df4b8c84a0473df.png","热词系列_热乎":"7fbd25c1f93baa038f5430e21f2edf56.png","热词系列_燃起来了":"98def051112ef2b032ed9f20e5f86353.png","热词系列_爱了爱了":"2faeb44f254c35181761bc668339dc54.png","热词系列_爷关更":"166db1d898cf959cbdca38c6d4e89a34.png","热词系列_爷青回":"716b7599a86f9de72eb2a1a3f059adcc.png","热词系列_猛男必看":"a868a5ed104abba4338aa5a7df40c9b8.png","热词系列_真香":"1de7316578f05de13f5096019059272e.png","热词 系列_知识增加":"968a80e2cf5e4ca63ec93acaac1207a8.png","热词系列_知识盲区":"b8236a8f0c7dc78ddf6993a69b014247.png","热词系列_破防了":"6f87155eef78a702979917b28e0eb6e2.png","热词系列_神仙UP":"d3e4a77ef0b66fe61a96f68ed8cfd739.png","热词系列_福建舰":"a50465b57be197b277dfd0ecd951255b.png","热词系列_秀":"20868bcf6504f2bc5f75b49be380ba3a.png","热词系列_红红火火":"83d59e51ed4b7200dee4b8dd95502eed.png","热词系列_芜湖起飞":"62013b3cbd25efd15240be9821ae6db8.png","热词系列_身体健康":"110aed26fe37043926c0eaf15be93491.png","热词系列_这次一定":"b7bbd1eef64cadedf75c40f3076da0fd.png","热词系列_递话筒":"b4f0e2042cd73ca11879aaf07ad44471.png","热词系列_锤":"65052d8f6c0f02af00156d32c62d805f.png","热词系列_镇站之宝":"ad4c0c3e0a633240583e53bd693348f0.png","热词系列_问号":"5310d4cf9f1c9f066044c4338c922439.png","热词系列_饮茶先啦":"665f25412fd64c3c516d06bed7716a30.png","热词系列_高产":"ea9c9d43a0f026d81944636b74342a2b.png","热词表情_哎呦不错哦":"97f500b293bc5779910381b8f7ac4e98.png",},
+        })
+	jinrishici.load(function(result) {
+     var jrsc_plac = result.data.content + "\n\t——" + "【" + result.data.origin.dynasty + "】" + result.data.origin.author + "《" + result.data.origin.title + "》"
+     document.getElementById("veditor").setAttribute("placeholder",jrsc_plac);
+      });
+    </script>
+	
+
+	<div id="goTopBtn"><i class="fa fa-angle-up" aria-hidden="true"></i></div>
+	<style>
+	#goTopBtn {
+		position: fixed;
+		line-height: 45px;
+		text-align: center;
+		width: 45px;
+		bottom: 35px;
+		height: 45px;
+		cursor: pointer;
+		display: none;
+		border-radius: 6px;
+		filter: progid: DXImageTrnsform.Microsoft.Shadow(color=#e1e1e1,direction=120,strength=4);
+		box-shadow: 8px 8px 10px rgba(225, 225, 225, 255);
+		font-size: 25px;
+		color: #999;
+		background-color: #f5f5f5;
+	}
+	</style>
+	<script>
+	$(window).scroll(function(){
+	   var sc=$(window).scrollTop();
+	   var rwidth=$(window).width()
+	   if(sc>0){
+		$("#goTopBtn").css("display","block");
+		$("#goTopBtn").css("left",(rwidth-60)+"px")
+	   }else{
+	   $("#goTopBtn").css("display","none");
+	   }
+	 })
+	 $("#goTopBtn").click(function(){
+	   var sc=$(window).scrollTop();
+	   $('body,html').animate({scrollTop:0},500);
+	 })
+
+	   </script>
+	
+  </body>
+</html>

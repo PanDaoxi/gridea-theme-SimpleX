@@ -1,0 +1,231 @@
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="application/javascript">
+
+AOS.init();
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+<% if (site.customConfig.renderCode) { %>
+  <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad()
+  </script>
+<% } %>
+
+<% if (typeof commentSetting !== 'undefined' && commentSetting.showComment) { %>
+
+  <% if (commentSetting.commentPlatform === 'gitalk') { %>
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+
+      var gitalk = new Gitalk({
+        clientID: '<%= commentSetting.gitalkSetting.clientId %>',
+        clientSecret: '<%= commentSetting.gitalkSetting.clientSecret %>',
+        repo: '<%= commentSetting.gitalkSetting.repository %>',
+        owner: '<%= commentSetting.gitalkSetting.owner %>',
+        admin: ['<%= commentSetting.gitalkSetting.owner %>'],
+        id: (location.pathname).substring(0, 49),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+
+      gitalk.render('gitalk-container')
+
+    </script>
+  <% } %>
+
+  <% if (commentSetting.commentPlatform === 'disqus') { %>
+    <script src="https://unpkg.com/disqusjs@1.1/dist/disqus.js"></script>
+    <script>
+
+    var options = {
+      shortname: '<%= commentSetting.disqusSetting.shortname %>',
+      apikey: '<%= commentSetting.disqusSetting.apikey %>',
+    }
+    if ('<%= commentSetting.disqusSetting.api %>') {
+      options.api = '<%= commentSetting.disqusSetting.api %>'
+    }
+    var dsqjs = new DisqusJS(options)
+
+    </script>
+  <% } %>
+
+<% } %>
+
+<script>class Circle {
+  constructor({ origin, speed, color, angle, context }) {
+    this.origin = origin
+    this.position = { ...this.origin }
+    this.color = color
+    this.speed = speed
+    this.angle = angle
+    this.context = context
+    this.renderCount = 0
+  }
+
+  draw() {
+    this.context.fillStyle = this.color
+    this.context.beginPath()
+    this.context.arc(this.position.x, this.position.y, 2, 0, Math.PI * 2)
+    this.context.fill()
+  }
+
+  move() {
+    this.position.x = (Math.sin(this.angle) * this.speed) + this.position.x
+    this.position.y = (Math.cos(this.angle) * this.speed) + this.position.y + (this.renderCount * 0.3)
+    this.renderCount++
+  }
+}
+
+class Boom {
+  constructor ({ origin, context, circleCount = 10, area }) {
+    this.origin = origin
+    this.context = context
+    this.circleCount = circleCount
+    this.area = area
+    this.stop = false
+    this.circles = []
+  }
+
+  randomArray(range) {
+    const length = range.length
+    const randomIndex = Math.floor(length * Math.random())
+    return range[randomIndex]
+  }
+
+  randomColor() {
+    const range = ['8', '9', 'A', 'B', 'C', 'D', 'E', 'F']
+    return '#' + this.randomArray(range) + this.randomArray(range) + this.randomArray(range) + this.randomArray(range) + this.randomArray(range) + this.randomArray(range)
+  }
+
+  randomRange(start, end) {
+    return (end - start) * Math.random() + start
+  }
+
+  init() {
+    for(let i = 0; i < this.circleCount; i++) {
+      const circle = new Circle({
+        context: this.context,
+        origin: this.origin,
+        color: this.randomColor(),
+        angle: this.randomRange(Math.PI - 1, Math.PI + 1),
+        speed: this.randomRange(1, 6)
+      })
+      this.circles.push(circle)
+    }
+  }
+
+  move() {
+    this.circles.forEach((circle, index) => {
+      if (circle.position.x > this.area.width || circle.position.y > this.area.height) {
+        return this.circles.splice(index, 1)
+      }
+      circle.move()
+    })
+    if (this.circles.length == 0) {
+      this.stop = true
+    }
+  }
+
+  draw() {
+    this.circles.forEach(circle => circle.draw())
+  }
+}
+
+class CursorSpecialEffects {
+  constructor() {
+    this.computerCanvas = document.createElement('canvas')
+    this.renderCanvas = document.createElement('canvas')
+
+    this.computerContext = this.computerCanvas.getContext('2d')
+    this.renderContext = this.renderCanvas.getContext('2d')
+
+    this.globalWidth = window.innerWidth
+    this.globalHeight = window.innerHeight
+
+    this.booms = []
+    this.running = false
+  }
+
+  handleMouseDown(e) {
+    const boom = new Boom({
+      origin: { x: e.clientX, y: e.clientY },
+      context: this.computerContext,
+      area: {
+        width: this.globalWidth,
+        height: this.globalHeight
+      }
+    })
+    boom.init()
+    this.booms.push(boom)
+    this.running || this.run()
+  }
+
+  handlePageHide() {
+    this.booms = []
+    this.running = false
+  }
+
+  init() {
+    const style = this.renderCanvas.style
+    style.position = 'fixed'
+    style.top = style.left = 0
+    style.zIndex = '999999999999999999999999999999999999999999'
+    style.pointerEvents = 'none'
+
+    style.width = this.renderCanvas.width = this.computerCanvas.width = this.globalWidth
+    style.height = this.renderCanvas.height = this.computerCanvas.height = this.globalHeight
+
+    document.body.append(this.renderCanvas)
+
+    window.addEventListener('mousedown', this.handleMouseDown.bind(this))
+    window.addEventListener('pagehide', this.handlePageHide.bind(this))
+  }
+
+  run() {
+    this.running = true
+    if (this.booms.length == 0) {
+      return this.running = false
+    }
+
+    requestAnimationFrame(this.run.bind(this))
+
+    this.computerContext.clearRect(0, 0, this.globalWidth, this.globalHeight)
+    this.renderContext.clearRect(0, 0, this.globalWidth, this.globalHeight)
+
+    this.booms.forEach((boom, index) => {
+      if (boom.stop) {
+        return this.booms.splice(index, 1)
+      }
+      boom.move()
+      boom.draw()
+    })
+    this.renderContext.drawImage(this.computerCanvas, 0, 0, this.globalWidth, this.globalHeight)
+  }
+}
+
+const cursorSpecialEffects = new CursorSpecialEffects()
+cursorSpecialEffects.init()</script>
+ <canvas width="1366" height="662" style="position: fixed; left: 0px; top: 0px; z-index: 2147483647; pointer-events: none;"></canvas>
+
+
+    </div>
+    <script type="application/javascript">
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+

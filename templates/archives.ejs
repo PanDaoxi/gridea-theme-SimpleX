@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./_blocks/head', { siteTitle: `文章归档 | ${themeConfig.siteName}` }) %>
+    <meta name="description" content="<%= themeConfig.siteDescription %>">
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <%- include('./_blocks/sidebar') %>
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <% let years = []; posts.forEach((item) => { const year = item.date.substring(0, 4); if (!years.includes(year)) { years.push(year); } }); %>
+
+          <h2 class="archives-title">文章归档</h2>
+          <div class="archives-container">
+            <% years.forEach(function(year) { %>
+              <h2 class="year" data-aos="fade-in" data-aos-delay="500"><%- year %></h2>
+              <% posts.forEach(function(post) { %>
+                <%if (post.date.indexOf(year) !== -1) { %>
+                  <article class="post">
+                    <a href="<%= post.link %>">
+                      <h2 class="post-title">
+                        <%= post.title %>
+                      </h2>
+                    </a>
+                  </article>
+                <% } %>
+              <% }); %>
+            <% }); %>
+          </div>
+
+          <%- include('./_blocks/pagination') %>
+        </div>
+      </div>
+    </div>
+
+    <%- include('./_blocks/scripts') %>
+	<div id="goTopBtn"><i class="fa fa-angle-up" aria-hidden="true"></i></div>
+	<style>
+	#goTopBtn {
+		position: fixed;
+		line-height: 45px;
+		text-align: center;
+		width: 45px;
+		bottom: 35px;
+		height: 45px;
+		cursor: pointer;
+		display: none;
+		border-radius: 6px;
+		filter: progid: DXImageTrnsform.Microsoft.Shadow(color=#e1e1e1,direction=120,strength=4);
+		box-shadow: 8px 8px 10px rgba(225, 225, 225, 255);
+		font-size: 25px;
+		color: #999;
+		background-color: #f5f5f5;
+	}
+	</style>
+	<script>
+	$(window).scroll(function(){
+	   var sc=$(window).scrollTop();
+	   var rwidth=$(window).width()
+	   if(sc>0){
+		$("#goTopBtn").css("display","block");
+		$("#goTopBtn").css("left",(rwidth-60)+"px")
+	   }else{
+	   $("#goTopBtn").css("display","none");
+	   }
+	 })
+	 $("#goTopBtn").click(function(){
+	   var sc=$(window).scrollTop();
+	   $('body,html').animate({scrollTop:0},500);
+	 })
+
+	   </script>
+  </body>
+</html>
