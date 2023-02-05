@@ -3,6 +3,9 @@
 
 `SimpleX` 基于 `Simple` 主题，略作修改~
 
+> 在线 `Demo`：
+> <https://pandaoxi.netlify.app/>
+
 具体修改内容：
 
 - 去掉了侧栏的上下、左右滑动条；
