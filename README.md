@@ -9,12 +9,17 @@
 具体修改内容：
 
 - 去掉了侧栏的上下、左右滑动条；
-- **集成 `Valine` 评论系统**（需要自己放 `appID` 和 `appKey`），自带 `B` 站表情包，引入了“每日诗词”；
+- **集成 `Valine` 评论系统**（需要自己放 `appID` 和 `appKey`），自带小破站表情包，引入了“每日诗词”；
+
+![image](https://user-images.githubusercontent.com/63720932/216885845-7d87ff55-2297-4416-936e-2eb56a3e4e77.png)
+
 - 添加**花瓣飞舞特效**、**鼠标烟花特效**；
 
 ![image](https://user-images.githubusercontent.com/63720932/216826442-93f47d97-a948-4998-b987-d64d0adf5c86.png)
 - 添加返回顶部按钮；
-- 美化首页博客条列页面。
+
+![image](https://user-images.githubusercontent.com/63720932/216885961-aaf96d5d-6c5f-4c1b-8d9a-f7d3915ed7cf.png)
+- 美化博客条列页面。
 
 ![image](https://user-images.githubusercontent.com/63720932/216826379-e382a762-84cd-4fe5-bcf4-f54ff35f4f56.png)
 - 标题修改
