@@ -20,13 +20,14 @@
                 <a href="<%= post.link %>"  style="color:rgb(89,120,243);">
                   <h2 class="post-title"><%= post.title %></h2>
                 </a>
-                <div class="post-date" style="white-space: pre;">
-                  <i class="fa fa-calendar"></i>  <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mtext>B</mtext></mrow><annotation encoding="application/x-tex">\text{B}</annotation></semantics></math></span><span aria-hidden="true" class="katex-html"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord text"><span class="mord"><%= post.dateFormat%></span></span></span></span></span>
+                <div class="post-date">
+					<i class="fa fa-calendar"></i> 
+					<%= post.dateFormat%>
                 </div>
                 <div class="post-abstract">
 				  <i class="fa fa-tag"></i>  
 				  <% post.tags.forEach(function(tag, index) { %>
-					<a href="<%= tag.link %>"><%= tag.name %>
+					<a href="<%= tag.link %>" style="color:rgb(173,181,189)"><%= tag.name %>
 					<% if (index !== post.tags.length - 1) { %>、<% } %></a><% }); %>
                 </div>
               </div>

@@ -15,11 +15,11 @@
           <% posts.forEach(function(post) { %>
             <article class="post-item">
               <div class="left">
-                <a href="<%= post.link %>">
+                <a href="<%= post.link %>" style="color:rgb(89,120,243);">
                   <h2 class="post-title"><%= post.title %></h2>
                 </a>
                 <div class="post-date">
-                  <%= post.dateFormat %>
+                  <i class="fa fa-calendar"></i> <%= post.dateFormat %>
                 </div>
                 <div class="post-abstract">
                   <%- post.abstract %>
